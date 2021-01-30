@@ -2,7 +2,7 @@
  * @Author: LXK9301 https://github.com/LXK9301
  * @Date: 2020-08-16 18:54:16
  * @Last Modified by: LXK9301
- * @Last Modified time: 2021-1-22 21:22:37
+ * @Last Modified time: 2021-1-29 21:22:37
  */
 /*
 东东超市
@@ -14,14 +14,14 @@ Some Functions Modified From https://github.com/Zero-S1/JD_tools/blob/master/JD_
 =================QuantumultX==============
 [task_local]
 #东东超市
-11 1-23/5 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js, tag=东东超市, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxc.png, enabled=true
+11 * * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js, tag=东东超市, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxc.png, enabled=true
 ===========Loon===============
 [Script]
-cron "11 1-23/5 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js,tag=东东超市
+cron "11 * * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js,tag=东东超市
 =======Surge===========
-东东超市 = type=cron,cronexp="11 1-23/5 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js
+东东超市 = type=cron,cronexp="11 * * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js
 ==============小火箭=============
-东东超市 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js, cronexpr="11 1-23/5 * * *", timeout=3600, enable=true
+东东超市 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_superMarket.js, cronexpr="11 * * * *", timeout=3600, enable=true
  */
 const $ = new Env('东东超市');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -194,16 +194,16 @@ async function doDailyTask() {
         }
       }
       if (item.type === 10) {
-        //关注店铺
+        //关注商品领蓝币
         if (item.taskStatus === 0) {
-          console.log('开始关注店铺')
+          console.log('关注商品')
           const itemId = item.content[item.type].itemId;
           const res = await smtgDoShopTask(item.taskId, itemId);
           console.log(`${item.subTitle}结果${JSON.stringify(res)}`);
         }
       }
       if ((item.type === 8 || item.type === 2 || item.type === 10) && item.taskStatus === 0) {
-        await doDailyTask();
+        // await doDailyTask();
       }
     }
   }
@@ -321,9 +321,7 @@ async function businessCircleActivity() {
       if (joinPkTeam === 'true') {
         await getTeam();
         console.log(`\n注：PK会在每天的七点自动随机加入LXK9301创建的队伍\n`)
-        await updatePkActivityId();
-        if (!$.updatePkActivityIdRes) await updatePkActivityIdCDN('https://gitee.com/lxk0301/updateTeam/raw/master/jd_updateTeam.json');
-        if (!$.updatePkActivityIdRes) await updatePkActivityIdCDN('https://cdn.jsdelivr.net/gh/LXK9301/updateTeam@master/jd_updateTeam.json');
+        await updatePkActivityIdCDN('https://gitee.com/lxk0301/updateTeam/raw/master/jd_updateTeam.json');
         console.log(`\nupdatePkActivityId[pkActivityId]:::${$.updatePkActivityIdRes.pkActivityId}`);
         console.log(`\n京东服务器返回的[pkActivityId] ${pkActivityId}`);
         if ($.updatePkActivityIdRes && ($.updatePkActivityIdRes.pkActivityId === pkActivityId)) {
